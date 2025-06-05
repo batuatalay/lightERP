@@ -1,0 +1,65 @@
+services:
+  lightERPDb:
+    image: mysql:8.0
+    platform: linux/arm64/v8
+    container_name: lightERPDb
+    environment:
+      MYSQL_ROOT_PASSWORD: '1q2w3e4r'
+      MYSQL_DATABASE: 'lightERP-db'
+      MYSQL_USER: 'lightERP'
+      MYSQL_PASSWORD: '1q2w3e4r'
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - lightERP-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u$$MYSQL_USER", "-p$$MYSQL_PASSWORD"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  lightERP-phpmyadmin:
+    image: arm64v8/phpmyadmin:latest
+    container_name: lightERP-phpmyadmin
+    environment:
+      PMA_HOST: lightERPDb
+      PMA_PORT: 3306
+    ports:
+      - "8090:80"
+    depends_on:
+      lightERPDb:
+        condition: service_healthy
+    networks:
+      - lightERP-network
+
+  lightERP-app:
+    build: 
+      context: .
+      dockerfile: Dockerfile.apache
+    container_name: lightERP-app
+    ports:
+      - "80:80"
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      lightERPDb:
+        condition: service_healthy
+    environment:
+      - MYSQL_HOST=lightERPDb
+      - MYSQL_PORT=3306
+      - MYSQL_DATABASE=lightERP-db
+      - MYSQL_USER=lightERP
+      - MYSQL_PASSWORD=1q2w3e4r
+    networks:
+      - lightERP-network
+    command: >
+      bash -c "apt-get update && apt-get install -y libpq-dev && docker-php-ext-install pdo_mysql && apache2-foreground"
+
+networks:
+  lightERP-network:
+    driver: bridge
+
+volumes:
+  mysql_data:
