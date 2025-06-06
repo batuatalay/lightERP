@@ -19,7 +19,7 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'database',
-            'model' => User::class,
+            'model' => UserModel::class,
         ],
     ],
     

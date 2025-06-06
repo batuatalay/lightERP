@@ -3,7 +3,7 @@
 
 require_once BASE . '/orm/BaseORM.php';
 
-class User extends BaseORM {
+class UserModel extends BaseORM {
     protected static $table = 'users';
     protected static $primaryKey = 'id';
     protected static $fillable = ['username', 'email', 'role', 'password', 'active'];

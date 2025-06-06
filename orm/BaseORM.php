@@ -1,5 +1,4 @@
 <?php
-// orm/BaseORM.php
 
 abstract class BaseORM extends Mysql {
     protected static $table;

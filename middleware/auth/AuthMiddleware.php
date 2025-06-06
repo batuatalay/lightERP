@@ -2,7 +2,7 @@
 require_once BASE . "/helper/session.helper.php";
 
 #[Attribute(Attribute::TARGET_METHOD | Attribute::TARGET_CLASS)]
-class Auth {
+class AuthAttribute {
     public function __construct(
         public readonly string $role = 'user'
     ) {}

@@ -1,5 +1,7 @@
 <?php
 require_once BASE . "/helper/session.helper.php";
+require_once BASE . "/middleware/auth/AdminMiddleware.php";
+require_once BASE . "/middleware/auth/LoginMiddleware.php";
 
 #[Attribute(Attribute::TARGET_METHOD | Attribute::TARGET_CLASS)]
 class Auth {
@@ -20,38 +22,6 @@ class Auth {
     }
 }
 
-#[Attribute]
-class LoginAttribute {
-    public function __construct() {}
-
-    public function handle($next, $params) {
-        echo "LoginMiddleware executed!<br>";
-        if (!SessionHelper::isLoggedIn()) {
-            header("Location: /login");
-            exit;
-        }
-        return $next($params);
-    }
-}
-
-#[Attribute]
-class AdminAttribute {
-    public function __construct() {}
-
-    public function handle($next, $params) {
-        if (!SessionHelper::isLoggedIn()) {
-            header("Location: /login");
-            exit;
-        }
-        if (!SessionHelper::isAdmin()) {
-            http_response_code(403);
-            header("Location: /main");
-            exit("Access denied. Admin privileges required.");
-        }
-        echo "AdminMiddleware executed!<br>";
-        return $next($params);
-    }
-}
 
 interface MiddlewareInterface {
     public function handle($request, $next);
@@ -93,19 +63,6 @@ class LoginMiddleware implements MiddlewareInterface {
         }
         
         echo "LoginMiddleware executed!<br>";
-        
-        return $next($request);
-    }
-}
-class AdminMiddleware implements MiddlewareInterface {
-    public function handle($request, $next) {
-        $admin = $request['middleware_data']['admin'] ?? null;
-        
-        if (!$admin) {
-            return $next($request);
-        }
-        
-        echo "AdminMiddleware executed!<br>";
         
         return $next($request);
     }

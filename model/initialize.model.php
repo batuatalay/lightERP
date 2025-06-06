@@ -2,7 +2,6 @@
 
 class InitializeModel extends Mysql {
 	private $tableName = "migrations";
-	private $pdo;
 	
 	public function __construct($arr = []) {
 		$this->pdo = $this->connect();
