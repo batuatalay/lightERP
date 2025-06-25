@@ -62,17 +62,19 @@ class Main extends SimpleController {
                             <tr>
                                 <th>Kullanıcı Adı</th>
                                 <th>E-posta</th>
+                                <th>Organizasyon</th>
                                 <th>Rol</th>
                             </tr>
                         </thead>
                         <tbody>';
             
             foreach ($users as $user) {
-                $roleClass = $user->role === 'admin' ? 'role-admin' : 'role-user';
+                $permissions = str_replace(";", '<br>', $user['all_permissions']);
                 echo '<tr>
-                    <td>' . htmlspecialchars($user->username) . '</td>
-                    <td>' . htmlspecialchars($user->email) . '</td>
-                    <td class="' . $roleClass . '">' . htmlspecialchars($user->role) . '</td>
+                    <td>' . htmlspecialchars($user['username']) . '</td>
+                    <td>' . htmlspecialchars($user['email']) . '</td>
+                    <td>' . htmlspecialchars($user['organization']) . '</td>
+                    <td class="' . $user['type'] . '">' . $permissions . '</td>
                 </tr>';
             }
             

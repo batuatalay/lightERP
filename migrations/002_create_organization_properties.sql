@@ -1,19 +1,18 @@
+DROP TABLE IF EXISTS organization_properties;
 CREATE TABLE organization_properties (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    organization_id CHAR(36) NOT NULL, -- UUID format to match organizations table
+    org_property_id INT AUTO_INCREMENT PRIMARY KEY,
+    organization_id INT NOT NULL,
     property_key VARCHAR(100) NOT NULL,
     property_value TEXT,
     property_type ENUM('string', 'integer', 'boolean', 'date', 'json') DEFAULT 'string',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     
-    -- Foreign key constraint with UUID
-    FOREIGN KEY (organization_id) REFERENCES organizations(organization_id) ON DELETE CASCADE,
-    
-    -- Composite unique index - bir org için aynı key sadece bir kez
-    UNIQUE KEY uk_org_property (organization_id, property_key),
-    
-    -- Performance indexes
     INDEX idx_organization_id (organization_id),
-    INDEX idx_property_key (property_key)
-);
+    INDEX idx_property_key (property_key),
+    UNIQUE KEY uk_org_property (organization_id, property_key)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+ALTER TABLE organization_properties 
+ADD CONSTRAINT fk_org_properties_organization 
+FOREIGN KEY (organization_id) REFERENCES organizations(organization_id) ON DELETE CASCADE;

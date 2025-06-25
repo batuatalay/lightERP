@@ -6,33 +6,33 @@ class Initialize extends SimpleController {
         $users = [
             [
                 'username' => 'admin',
+                'name' => 'admin',
                 'email' => 'admin@example.com',
                 'password' => password_hash('admin123', PASSWORD_DEFAULT),
-                'role' => 'admin'
             ],
             [
                 'username' => 'john_doe',
+                'name' => 'john_doe',
                 'email' => 'john@example.com',
                 'password' => password_hash('user123', PASSWORD_DEFAULT),
-                'role' => 'user'
             ],
             [
                 'username' => 'jane_smith',
+                'name' => 'jane_smith',
                 'email' => 'jane@example.com',
                 'password' => password_hash('user123', PASSWORD_DEFAULT),
-                'role' => 'user'
             ],
             [
                 'username' => 'mike_wilson',
+                'name' => 'mike_wilson',
                 'email' => 'mike@example.com',
                 'password' => password_hash('user123', PASSWORD_DEFAULT),
-                'role' => 'user'
             ],
             [
                 'username' => 'sarah_brown',
+                'name' => 'sarah_brown',
                 'email' => 'sarah@example.com',
                 'password' => password_hash('user123', PASSWORD_DEFAULT),
-                'role' => 'user'
             ]
         ];
 
@@ -53,13 +53,9 @@ class Initialize extends SimpleController {
                 exit;
             }
             
-            // Run migrations if tables don't exist
             $messages = $model->runAllMigrations();
             
             // Create initial users
-            $userCount = self::createInitialUsers($model);
-            $messages[] = "{$userCount} users created successfully.";
-            
             echo "<h1>Database Migration</h1>";
             echo "<div style='background-color: #d4edda; color: #155724; padding: 15px; border-radius: 4px;'>";
             echo "<h3>✅ Database tables created successfully!</h3>";
