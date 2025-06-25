@@ -83,7 +83,7 @@ docker-compose.override.yml
 
 # Except migration files
 !migrations/*.sql
-
+!migrations/insert/*.sql
 # Temporary files
 tmp/
 temp/
