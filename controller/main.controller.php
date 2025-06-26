@@ -5,6 +5,7 @@ require_once BASE . "/model/user.model.php";
 class Main extends SimpleController {
     public static function getMainPage() {
         try {
+            //$companies = Company::getAll();
             $users = UserModel::getAllUsers();
             echo '<!DOCTYPE html>
             <html>
