@@ -9,3 +9,4 @@ $route = new Router();
 //TODO :: $_SERVER["REQUEST_METHOD"] check
 $route->get('/main', "Main@getMainPage");
 $route->get('/main/dashboard', "Main@getDashboard");
+$route->get('/main/test', "Main@testFunction");

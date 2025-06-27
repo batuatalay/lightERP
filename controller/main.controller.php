@@ -1,8 +1,16 @@
 <?php 
 require_once BASE . "/middleware/common.middleware.php";
 require_once BASE . "/model/user.model.php";
+require_once BASE . "/middleware/organization/Organization.middleware.php";
 
 class Main extends SimpleController {
+
+    #[OrganizationAdminAttribute]
+    public static function testFunction() {
+        var_dump('test');exit;
+    }
+
+
     public static function getMainPage() {
         try {
             //$companies = Company::getAll();

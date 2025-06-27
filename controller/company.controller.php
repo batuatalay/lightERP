@@ -1,10 +1,5 @@
 <?php 
 require_once BASE . "/middleware/common.middleware.php";
-require_once BASE . "/middleware/auth/AuthMiddleware.php";
-require_once BASE . "/middleware/auth/AdminMiddleware.php";
-require_once BASE . "/middleware/auth/LoginMiddleware.php";
-require_once BASE . "/middleware/auth/TenantMiddleware.php";
-require_once BASE . "/middleware/auth/ApiAuthMiddleware.php";
 require_once BASE . "/model/company.model.php";
 
 
