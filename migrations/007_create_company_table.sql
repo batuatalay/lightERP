@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS companies;
 CREATE TABLE companies (
-    company_id INT AUTO_INCREMENT PRIMARY KEY,
-    organization_id INT NOT NULL,
+    company_id VARCHAR(36) PRIMARY KEY,
+    organization_id VARCHAR(36) NOT NULL,
     code VARCHAR(50) UNIQUE NOT NULL,
     name VARCHAR(255) NOT NULL,
     tax_number VARCHAR(50),

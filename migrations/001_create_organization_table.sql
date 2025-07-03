@@ -1,6 +1,6 @@
 DROP TABLE IF EXISTS organizations;
 CREATE TABLE organizations (
-    organization_id INT AUTO_INCREMENT PRIMARY KEY,
+    organization_id VARCHAR(36) PRIMARY KEY,
     organization_name VARCHAR(255) NOT NULL,
     organization_slug VARCHAR(100) UNIQUE NOT NULL,
     status ENUM('active', 'inactive', 'suspended', 'trial') DEFAULT 'trial',

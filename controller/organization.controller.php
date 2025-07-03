@@ -295,19 +295,13 @@ class Organization extends SimpleController {
         }
     }
 
-
-
-    /**
-     * Organization dashboard view
-     */
-    // [LoginAttribute]
-    // [TenantAttribute]
     public function dashboard($params) {
         try {
             $orgId = SessionHelper::getCurrentOrganization();
             $orgId = "550e8400-e29b-41d4-a716-446655440001";
             $organization = OrganizationModel::find($orgId);
-            var_dump($organization); ""
+            var_dump($organization);
+            exit;
             if (!$organization) {
                 throw new Exception('Organization not found');
             }

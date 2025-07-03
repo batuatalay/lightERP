@@ -1,8 +1,8 @@
 DROP TABLE IF EXISTS organization_user_permissions;
 CREATE TABLE organization_user_permissions (
-    organization_id INT NOT NULL,
-    user_id INT NOT NULL,
-    permission_id INT NOT NULL,
+    organization_id VARCHAR(36) NOT NULL,
+    user_id VARCHAR(36) NOT NULL,
+    permission_id VARCHAR(36) NOT NULL,
     level ENUM('0', '1', '2', '3') DEFAULT '0', 
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     

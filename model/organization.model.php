@@ -3,11 +3,6 @@
 class OrganizationModel extends BaseORM {
     protected static $table = 'organizations';
     protected static $primaryKey = 'organization_id';
-    protected static $fillable = [
-        'organization_name',
-        'organization_slug', 
-        'status'
-    ];
 
     public function getOrganization($user_id) {
         if(!$user_id) {

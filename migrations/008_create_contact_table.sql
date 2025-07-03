@@ -1,13 +1,13 @@
 DROP TABLE IF EXISTS contacts;
 CREATE TABLE contacts (
-    contact_id INT AUTO_INCREMENT PRIMARY KEY,
-    company_id INT NOT NULL,                            -- Hangi şirkete ait
-    organization_id INT NOT NULL,                       -- Hangi organizasyona ait
-    name VARCHAR(255) NOT NULL,                         -- Kişi adı
-    phone VARCHAR(20),                                  -- Telefon
-    mail VARCHAR(255),                                  -- Email
-    address TEXT,                                       -- Adres
-    title VARCHAR(100),                                 -- Unvan/Pozisyon
+    contact_id VARCHAR(36) PRIMARY KEY,
+    company_id VARCHAR(36) NOT NULL,                            
+    organization_id VARCHAR(36) NOT NULL,                       
+    name VARCHAR(255) NOT NULL,                        
+    phone VARCHAR(20),                                  
+    mail VARCHAR(255),                                  
+    address TEXT,                                       
+    title VARCHAR(100),                                 
     status ENUM('active', 'inactive') DEFAULT 'active',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,

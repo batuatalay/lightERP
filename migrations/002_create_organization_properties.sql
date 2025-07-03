@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS organization_properties;
 CREATE TABLE organization_properties (
-    org_property_id INT AUTO_INCREMENT PRIMARY KEY,
-    organization_id INT NOT NULL,
+    org_property_id VARCHAR(36) PRIMARY KEY,
+    organization_id VARCHAR(36) NOT NULL,
     property_key VARCHAR(100) NOT NULL,
     property_value TEXT,
     property_type ENUM('string', 'integer', 'boolean', 'date', 'json') DEFAULT 'string',

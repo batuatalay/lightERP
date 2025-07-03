@@ -25,30 +25,6 @@ class InitializeModel extends Mysql {
 			throw new Exception("Error creating user: " . $e->getMessage());
 		}
 	}
-
-	private function getRequiredTables() {
-		$tables = [];
-		$migrationsDir = __DIR__ . '/../migrations';
-		
-		// Read all files in directory
-		$files = scandir($migrationsDir);
-		
-		foreach ($files as $file) {
-			// Skip . and .. directories
-			if ($file === '.' || $file === '..') {
-				continue;
-			}
-			
-			if (strpos($file, 'create') !== false && strpos($file, 'table') !== false) {
-				$tableName = str_replace(['create_', '_table.sql'], '', $file);
-				$tableName = preg_replace('/^\d+_/', '', $tableName);
-				$tables[] = $tableName;
-			}
-		}
-		
-		return $tables;
-	}
-
 	private function getInsertFiles() {
 		$insertFiles = [];
 		$insertsDir = __DIR__ . '/../migrations/insert';
@@ -61,7 +37,6 @@ class InitializeModel extends Mysql {
 		$files = scandir($insertsDir);
 		
 		foreach ($files as $file) {
-			// Skip . and .. directories
 			if ($file === '.' || $file === '..') {
 				continue;
 			}
@@ -76,70 +51,14 @@ class InitializeModel extends Mysql {
 		
 		return $insertFiles;
 	}
-
-	private function hasDataInTables() {
-		try {
-			// Temel tabloları kontrol et - eğer data varsa insert yapma
-			$tables = ['organizations', 'users', 'permissions'];
-			
-			foreach ($tables as $table) {
-				$stmt = $this->pdo->query("SELECT COUNT(*) FROM {$table}");
-				$count = $stmt->fetchColumn();
-				
-				if ($count > 0) {
-					return true; // Herhangi bir tabloda data varsa true döner
-				}
-			}
-			
-			return false; // Hiç data yoksa false
-		} catch (Exception $e) {
-			// Tablo yoksa false döner
-			return false;
-		}
-	}
-
-	public function checkIfTablesExist() {
-		try {
-			$tables = $this->getRequiredTables();
-			
-			// Check all tables
-			foreach ($tables as $table) {
-				$stmt = $this->pdo->query("SHOW TABLES LIKE '{$table}'");
-				if ($stmt->rowCount() == 0) {
-					// Return false if any table is missing
-					return false;
-				}
-			}
-			// Return true if all tables exist
-			return true;
-		} catch (Exception $e) {
-			throw new Exception("Error checking tables: " . $e->getMessage());
-		}
-	}
 	
 	public function runAllMigrations() {
 		try {
-			// First check if tables exist and have data
-			if ($this->checkIfTablesExist() && $this->hasDataInTables()) {
-				// If all tables exist and have data, redirect to main page
-				header("Location: /main");
-				exit;
-			}
-
 			$messages = [];
 			
-			// Disable foreign key checks
 			$this->pdo->exec("SET FOREIGN_KEY_CHECKS=0");
 			$messages[] = "Foreign key checks disabled";
 			
-			// First drop all existing tables
-			$tables = $this->getRequiredTables();
-			foreach ($tables as $table) {
-				$this->pdo->exec("DROP TABLE IF EXISTS {$table}");
-				$messages[] = "{$table} table dropped (if existed)";
-			}
-			
-			// STEP 1: Run table creation migrations
 			$migrations = glob(BASE . '/migrations/*.sql');
 			sort($migrations);
 			

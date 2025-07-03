@@ -1,19 +1,35 @@
 <?php 
 require_once BASE . "/middleware/common.middleware.php";
 require_once BASE . "/model/user.model.php";
+require_once BASE . "/model/product.model.php";
+require_once BASE . "/model/organization.model.php";
+require_once BASE . "/model/category.model.php";
 require_once BASE . "/middleware/organization/Organization.middleware.php";
 
 class Main extends SimpleController {
 
-    #[OrganizationAdminAttribute]
+    //#[OrganizationAdminAttribute]
     public static function testFunction() {
-        var_dump('test');exit;
+        $organization_id = '550e8400-e29b-41d4-a716-446655440001';
+        $categories = CategoryModel::getCategories($organization_id);
+        $result = array();
+        foreach ($categories as $category) {
+            $dump = array();
+            $dump['category_id'] = $category['category_id'];
+            $dump['code'] = $category['code'];
+            $dump['name'] = $category['name'];
+            $dump['product'] = ProductModel::getProducts($organization_id, $category['category_id']);
+            $result[] = $dump;
+        }   
+        self::view('main', 'index',["data" => $result]);
     }
 
 
     public static function getMainPage() {
         try {
             //$companies = Company::getAll();
+            //$products = ProductModel::getProducts('550e8400-e29b-41d4-a716-446655440001');
+            exit;
             $users = UserModel::getAllUsers();
             echo '<!DOCTYPE html>
             <html>
@@ -78,7 +94,14 @@ class Main extends SimpleController {
                         <tbody>';
             
             foreach ($users as $user) {
-                $permissions = str_replace(";", '<br>', $user['all_permissions']);
+                if(!$user['all_permissions']) {
+                    $permissions = '';
+                } else {
+                    $permissions = str_replace(";", '<br>', $user['all_permissions']);
+                }
+                if(!isset($user['type'])) {
+                    $user['type'] = '';
+                }
                 echo '<tr>
                     <td>' . htmlspecialchars($user['username']) . '</td>
                     <td>' . htmlspecialchars($user['email']) . '</td>

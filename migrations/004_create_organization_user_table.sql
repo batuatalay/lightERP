@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS organization_user;
 CREATE TABLE organization_user (
-    organization_id INT NOT NULL,
-    user_id INT NOT NULL,
+    organization_id VARCHAR(36) NOT NULL,
+    user_id VARCHAR(36) NOT NULL,
     role ENUM('owner', 'admin', 'user', 'viewer') DEFAULT 'user',
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     

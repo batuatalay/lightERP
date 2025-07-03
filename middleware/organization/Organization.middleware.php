@@ -24,11 +24,11 @@ class OrganizationAdminAttribute {
             exit("Access denied. Admin privileges required.");
         }
         
-        $userId = 2;
+        $userId = 1;
         $organizationId = 1;
         if (!$this->isOrganizationAdmin($organizationId, $userId)) {
             http_response_code(403);
-            //header("Location: /main");
+            header("Location: /main");
             exit("The user who logged in, is not organization Admin.");
         }
         

@@ -1,15 +1,10 @@
 INSERT INTO organization_user (organization_id, user_id, role, updated_at) VALUES
--- TechCorp (org_id: 1)
-(1, 1, 'admin', NOW()),  -- Ahmet admin
-(1, 2, 'user', NOW()),   -- Elif user
-(1, 3, 'user', NOW()),   -- Mehmet user
-
--- DataFlow (org_id: 2)
-(2, 4, 'admin', NOW()),  -- Zeynep admin
-(2, 5, 'user', NOW()),   -- Can user
-(2, 6, 'user', NOW()),   -- Selin user
-
--- CloudBridge (org_id: 3)
-(3, 7, 'admin', NOW()),  -- Burak admin
-(3, 8, 'user', NOW()),   -- Ayşe user
-(3, 9, 'user', NOW());   -- Emre user
+('550e8400-e29b-41d4-a716-446655440001', '650e8400-e29b-41d4-a716-446655440001', 'admin', NOW()), 
+('550e8400-e29b-41d4-a716-446655440001', '650e8400-e29b-41d4-a716-446655440002', 'user', NOW()),  
+('550e8400-e29b-41d4-a716-446655440001', '650e8400-e29b-41d4-a716-446655440003', 'user', NOW()),  
+('550e8400-e29b-41d4-a716-446655440002', '650e8400-e29b-41d4-a716-446655440004', 'admin', NOW()), 
+('550e8400-e29b-41d4-a716-446655440002', '650e8400-e29b-41d4-a716-446655440005', 'user', NOW()),  
+('550e8400-e29b-41d4-a716-446655440002', '650e8400-e29b-41d4-a716-446655440006', 'user', NOW()),  
+('550e8400-e29b-41d4-a716-446655440003', '650e8400-e29b-41d4-a716-446655440007', 'admin', NOW()), 
+('550e8400-e29b-41d4-a716-446655440003', '650e8400-e29b-41d4-a716-446655440008', 'user', NOW()),  
+('550e8400-e29b-41d4-a716-446655440003', '650e8400-e29b-41d4-a716-446655440009', 'user', NOW());  

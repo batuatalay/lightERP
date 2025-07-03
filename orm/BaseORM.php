@@ -139,7 +139,6 @@ abstract class BaseORM extends Mysql {
             $stmt = $instance->pdo->prepare($sql);
             $stmt->execute($params);
             $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            
             // Reset query builder
             static::resetQuery();
             
