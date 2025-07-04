@@ -11,9 +11,11 @@ switch ($_SERVER["REQUEST_METHOD"]) {
         $route->get('/inventory', "Inventory@getInventory");
         break;
     case 'POST':
-       
         break;
-    default:
-        
-        break;
+    case 'PUT':
+    break;
+    case 'DELETE':
+    break;
+    default:    
+    break;
 }

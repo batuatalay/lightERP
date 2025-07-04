@@ -7,5 +7,14 @@ class Router extends BaseRouter {
 }
 
 $route = new Router();
-
-$route->delete('/organization/#organization_id/delete', "Organization@deleteOrganization");
+switch ($_SERVER["REQUEST_METHOD"]) {
+	case 'GET':
+		break;
+	case 'POST':
+		break;
+	case 'PUT':
+		break;
+    case 'DELETE':
+		$route->delete('/organization/#organization_id/delete', "Organization@deleteOrganization");
+		break;
+}
