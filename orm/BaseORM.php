@@ -293,6 +293,48 @@ abstract class BaseORM extends Mysql {
         }
     }
     
+    public static function delete() {
+        $sql = static::buildDeleteQuery();
+        $params = static::getWhereParams();
+        
+        $instance = new static();
+        
+        try {
+            $stmt = $instance->pdo->prepare($sql);
+            $result = $stmt->execute($params);
+            
+            // Reset query builder
+            static::resetQuery();
+            
+            return $result;
+        } catch (PDOException $e) {
+            static::resetQuery();
+            throw new Exception("Error in delete query: " . $e->getMessage());
+        }
+    }
+
+    protected static function buildDeleteQuery() {
+        $sql = "DELETE FROM " . static::$table;
+        
+        // Add where conditions
+        if (!empty(static::$wheres)) {
+            $whereConditions = [];
+            foreach (static::$wheres as $index => $where) {
+                if ($index === 0) {
+                    $whereConditions[] = "{$where['column']} {$where['operator']} ?";
+                } else {
+                    $whereConditions[] = "{$where['boolean']} {$where['column']} {$where['operator']} ?";
+                }
+            }
+            $sql .= " WHERE " . implode(" ", $whereConditions);
+        } else {
+            // Güvenlik için: WHERE şartı olmadan delete yapılmasını engelle
+            throw new Exception("DELETE operation requires WHERE clause for safety");
+        }
+        
+        return $sql;
+    }
+
     // Instance methods (save, create, update, delete) remain the same...
     public function save() {
         if ($this->exists) {
@@ -347,27 +389,6 @@ abstract class BaseORM extends Mysql {
             return $stmt->execute($values);
         } catch (PDOException $e) {
             throw new Exception("Error updating record: " . $e->getMessage());
-        }
-    }
-    
-    public function delete() {
-        if (!$this->exists || !isset($this->attributes[static::$primaryKey])) {
-            throw new Exception("Cannot delete record without primary key");
-        }
-        
-        $sql = "DELETE FROM " . static::$table . " WHERE " . static::$primaryKey . " = ?";
-        
-        try {
-            $stmt = $this->pdo->prepare($sql);
-            $result = $stmt->execute([$this->attributes[static::$primaryKey]]);
-            
-            if ($result) {
-                $this->exists = false;
-            }
-            
-            return $result;
-        } catch (PDOException $e) {
-            throw new Exception("Error deleting record: " . $e->getMessage());
         }
     }
 }

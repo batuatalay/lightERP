@@ -29,4 +29,14 @@ class OrganizationModel extends BaseORM {
     public static function getAllActive() {
         return static::where('status', 'active');
     }
+
+    public static function deleteByUUID($organizationID) {
+        try {
+            self::from(static::$table)->where('organization_id','=',$organizationID)->delete();
+            return true;
+        } catch (Exception $e) {
+            error_log("Error fetching categories: " . $e->getMessage());
+            return null;
+        }
+    }
 }

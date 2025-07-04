@@ -37,6 +37,31 @@
 				$this->runFunction($url, $callback, $parameters);
 			}
 		}
+
+		public function delete($url, $callback, $parameters = null) {
+			$parameters = $this->getParamaters($url);
+			if(!empty($parameters)) {
+				$url = str_replace($parameters[0], $parameters[1], $url);
+				$parameters = $parameters[1];
+			}
+			if ($_SERVER["REQUEST_METHOD"] == "DELETE") {
+				$parameters = empty($parameters) ? $_POST : $parameters;
+				$this->runFunction($url, $callback, $parameters);
+			}
+		}
+
+		public function put($url, $callback, $parameters = null) {
+			$parameters = $this->getParamaters($url);
+			if(!empty($parameters)) {
+				$url = str_replace($parameters[0], $parameters[1], $url);
+				$parameters = $parameters[1];
+			}
+			if ($_SERVER["REQUEST_METHOD"] == "PUT") {
+				$parameters = empty($parameters) ? $_POST : $parameters;
+				$this->runFunction($url, $callback, $parameters);
+			}
+		}
+		
 		
 		protected function getParamaters($url) {
 			if (!$this->uri) return null;
