@@ -47,12 +47,12 @@ jspm_packages/
 .yarn-integrity
 
 # dotenv environment variables file
-.env
-.env.test
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+# .env
+# .env.test
+# .env.local
+# .env.development.local
+# .env.test.local
+# .env.production.local
 
 # Project specific
 /view/
@@ -75,15 +75,6 @@ coverage/
 .docker/
 docker-compose.override.yml
 
-# Database
-*.sql
-*.sqlite
-*.sqlite3
-*.db
-
-# Except migration files
-!migrations/*.sql
-!migrations/insert/*.sql
 # Temporary files
 tmp/
 temp/
