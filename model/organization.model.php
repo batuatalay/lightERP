@@ -39,4 +39,18 @@ class OrganizationModel extends BaseORM {
             return null;
         }
     }
+
+    public static function createOrganizationUser($userID, $organizationID, $role) {
+        $organizationUser = [
+            'organization_id' => $organizationID,
+            'user_id' => $userID,
+            'role' => $role,
+            'updated_at' => DateHelper::get()
+        ];
+        try {
+            self::from('organization_user')->insert($organizationUser)->execute();
+        } catch (Exception $e) {
+            echo 'User could not be assigned to Organization';exit;
+        }
+    }
 }

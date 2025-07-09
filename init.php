@@ -21,23 +21,9 @@ function loadEnv($path) {
         
         $_ENV[$key] = $value;
         putenv("$key=$value");
+        define($key, $value);
     }
 }
 
 // Load .env file
 loadEnv(__DIR__ . '/.env');
-
-// Define constants from environment variables
-define("DEVELOPMENT", $_ENV['DEVELOPMENT'] === 'true');
-define("ENV", $_ENV['ENV']);
-define("BASE", $_ENV['BASE']);
-define("PANEL", $_ENV['PANEL']);
-
-define("DBHOST", $_ENV['DBHOST']);
-define("DBNAME", $_ENV['DBNAME']);
-define("DBUSERNAME", $_ENV['DBUSERNAME']);
-define("DBPASSWORD", $_ENV['DBPASSWORD']);
-
-define("EMAIL", $_ENV['EMAIL']);
-define("EMAILPASSWORD", $_ENV['EMAILPASSWORD']);
-define("SMTPHOST", $_ENV['SMTPHOST']);

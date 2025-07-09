@@ -19,6 +19,9 @@ abstract class BaseORM extends Mysql {
     protected static $orders = [];
     protected static $limitCount = null;
     
+    // Insert için static değişken
+    protected static $insertData = [];
+    
     public function __construct($attributes = []) {
         if (self::$connection === null) {
             self::$connection = $this->connect();
@@ -126,6 +129,76 @@ abstract class BaseORM extends Mysql {
     public static function limit($count) {
         static::$limitCount = $count;
         return new static();
+    }
+    
+    // INSERT methods
+    public static function insert($data) {
+        if (is_array($data) && isset($data[0])) {
+            // Multiple insert
+            return static::insertMultiple($data);
+        } else {
+            // Single insert
+            static::$insertData = $data;
+            return new static();
+        }
+    }
+    
+    public function execute() {
+        if (empty(static::$insertData)) {
+            throw new Exception("No data to insert");
+        }
+        
+        $sql = static::buildInsertQuery();
+        $params = array_values(static::$insertData);
+        
+        $instance = new static();
+        
+        try {
+            $stmt = $instance->pdo->prepare($sql);
+            $result = $stmt->execute($params);
+            // Reset insert data
+            static::$insertData = [];
+            
+            return $result;
+        } catch (PDOException $e) {
+            static::$insertData = [];
+            throw new Exception("Error in insert: " . $e->getMessage());
+        }
+    }
+    
+    protected static function buildInsertQuery() {
+        $columns = array_keys(static::$insertData);
+        $placeholders = array_fill(0, count($columns), '?');
+        
+        return "INSERT INTO " . static::$table . " (" . implode(', ', $columns) . ") VALUES (" . implode(', ', $placeholders) . ")";
+    }
+    
+    protected static function insertMultiple($data) {
+        if (empty($data)) {
+            throw new Exception("No data to insert");
+        }
+        
+        $columns = array_keys($data[0]);
+        $placeholders = "(" . implode(', ', array_fill(0, count($columns), '?')) . ")";
+        $allPlaceholders = array_fill(0, count($data), $placeholders);
+        
+        $sql = "INSERT INTO " . static::$table . " (" . implode(', ', $columns) . ") VALUES " . implode(', ', $allPlaceholders);
+        
+        $params = [];
+        foreach ($data as $row) {
+            foreach ($columns as $column) {
+                $params[] = $row[$column] ?? null;
+            }
+        }
+        
+        $instance = new static();
+        
+        try {
+            $stmt = $instance->pdo->prepare($sql);
+            return $stmt->execute($params);
+        } catch (PDOException $e) {
+            throw new Exception("Error in multiple insert: " . $e->getMessage());
+        }
     }
     
     // Build and execute query
@@ -328,40 +401,15 @@ abstract class BaseORM extends Mysql {
             }
             $sql .= " WHERE " . implode(" ", $whereConditions);
         } else {
-            // Güvenlik için: WHERE şartı olmadan delete yapılmasını engelle
             throw new Exception("DELETE operation requires WHERE clause for safety");
         }
         
         return $sql;
     }
 
-    // Instance methods (save, create, update, delete) remain the same...
     public function save() {
         if ($this->exists) {
             return $this->update();
-        } else {
-            return $this->create();
-        }
-    }
-    
-    protected function create() {
-        $columns = array_keys($this->attributes);
-        $placeholders = array_fill(0, count($columns), '?');
-        
-        $sql = "INSERT INTO " . static::$table . " (" . implode(', ', $columns) . ") VALUES (" . implode(', ', $placeholders) . ")";
-        
-        try {
-            $stmt = $this->pdo->prepare($sql);
-            $result = $stmt->execute(array_values($this->attributes));
-            
-            if ($result) {
-                $this->attributes[static::$primaryKey] = $this->pdo->lastInsertId();
-                $this->exists = true;
-            }
-            
-            return $result;
-        } catch (PDOException $e) {
-            throw new Exception("Error creating record: " . $e->getMessage());
         }
     }
     
