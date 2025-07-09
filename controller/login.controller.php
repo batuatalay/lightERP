@@ -4,8 +4,6 @@ require_once BASE . "/helper/password.helper.php";
 require_once BASE . "/model/user.model.php";
 require_once BASE . "/model/permission.model.php";
 
-
-
 #[Prefix('login')]
 class Login extends SimpleController{
 
@@ -34,8 +32,7 @@ class Login extends SimpleController{
 
     public function signOut(){
         SessionHelper::destroySession();
-        header("Location: /login");
-        exit;
+        ReturnHelper::success('You are successfully signout');
     }
 
     public static function loginCheck() {

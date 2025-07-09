@@ -1,18 +1,47 @@
 <?php
+require_once BASE . "/helper/uuid.helper.php";
+
 class CompanyModel extends BaseORM {
     protected static $table = 'companies';
     protected static $primaryKey = 'company_id';
-    protected static $fillable = [
-        'organization_id',
-        'code',
-        'name', 
-        'tax_number',
-        'tax_office',
-        'address',
-        'city',
-        'discount',
-        'status'
-    ];
+
+    public static function create($params) {
+        if($params) {
+            try {
+                $companyID = UUIDHelper::generate();
+                $company = [
+                    'company_id' => $companyID,
+                    'organization_id' => $params['organization_id'],
+                    'code' => $params['code'],
+                    'name' => $params['name'],
+                    'tax_number' => $params['tax_number'],
+                    'tax_office' => $params['tax_office'],
+                    'address' => $params['address'],
+                    'city' => $params['city'],
+                    'discount' => $params['discount'],
+                    'status' => $params['status'],
+                    'created_at' => DateHelper::get(),
+                    'updated_at' => DateHelper::get()
+                ];
+                self::from(static::$table)->insert($company)->execute();
+            } catch(Exception $e) {
+                ReturnHelper::fail($e->getMessage());
+            }
+        }
+    }
+
+    public static function softDelete($companyID) {
+        try {
+            $company = self::find($companyID);
+            $company->status = 'inactive';
+            $company->updated_at = DateHelper::get();
+            $company->save();
+            ReturnHelper::success("Company successfully deleted");
+        } catch (Exception $e) {
+            ReturnHelper::fail($e->getMessage());
+        }
+
+    }
     
     public static function getAllCompaniesWithContacts($organizationId = null) {
         $sql = "SELECT " .
@@ -86,17 +115,6 @@ class CompanyModel extends BaseORM {
         ", [$this->company_id]);
     }
     
-    
-    protected function create() {
-        
-        if (!isset($this->attributes['code'])) {
-            $this->attributes['code'] = $this->generateCompanyCode();
-        }
-        
-        return parent::create();
-    }
-    
-    
     private function generateCompanyCode() {
         // Organization prefix'i al
         $orgPrefix = 'COMP';
@@ -141,13 +159,6 @@ class CompanyModel extends BaseORM {
         $sql .= " ORDER BY name";
         
         return static::raw($sql, $params);
-    }
-    
-    
-    public function softDelete() {
-        // Companies tablosunda deleted_at yok, status kullan
-        $this->status = 'inactive';
-        return $this->save();
     }
     
     

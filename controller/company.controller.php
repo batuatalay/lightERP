@@ -1,7 +1,11 @@
 <?php 
 require_once BASE . "/middleware/common.middleware.php";
 require_once BASE . "/model/company.model.php";
+require_once BASE . "/helper/date.helper.php";
+require_once BASE . "/helper/return.helper.php";
 
+
+require_once BASE . "/middleware/company/company.middleware.php";
 
 class Company extends SimpleController{
 
@@ -10,9 +14,16 @@ class Company extends SimpleController{
 		var_dump($companies);exit;
 	
 	}
-
-	public static function testFunction2() {
-		echo PHP_EOL . 'test Function 2';
-		
+	#[LoginAttribute]
+	#[CompanyPermissionAttribute]
+	public static function create($params) {
+		DateHelper::now();
+		CompanyModel::create($params);
+	}
+	#[LoginAttribute]
+	#[CompanyDeletePermissionAttribute]
+	public static function delete($params) {
+		DateHelper::now();
+		CompanyModel::softDelete($params);
 	}
 }
