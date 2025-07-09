@@ -16,8 +16,12 @@ class SessionHelper {
         }
     }
 
-    public static function getUserData() {
-        return $_SESSION['user'] ?? null;
+    public static function getUserData($key = null) {
+        if(!$key) {
+            return $_SESSION['user'] ?? null;
+        } else {
+            return $_SESSION['user'][$key] ?? null;
+        }
     }
 
     public static function hasPermission($permission) {
@@ -85,32 +89,4 @@ class SessionHelper {
         ];
         echo "User changed to regular user with organization: org-123<br>";
     }
-}
-
-// Updated test function with organization
-function createTestUser() {
-    $testUser = [
-        'id' => 1,
-        'name' => 'Test Admin',
-        'username' => 'testadmin',
-        'user_role' => 'admin',
-        'organization_id' => 'org-123', // NEW: Test organization
-        'permissions' => ['read', 'write', 'delete']
-    ];
-    
-    SessionHelper::createUserSession($testUser);
-}
-
-// NEW: Create super admin function
-function createSuperAdmin() {
-    $superAdmin = [
-        'id' => 99,
-        'name' => 'Super Admin',
-        'username' => 'superadmin',
-        'user_role' => 'superadmin',
-        'organization_id' => null, // Super admin doesn't belong to specific org
-        'permissions' => ['*'] // All permissions
-    ];
-    
-    SessionHelper::createUserSession($superAdmin);
 }

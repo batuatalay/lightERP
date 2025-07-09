@@ -12,10 +12,9 @@ class AdminAttribute {
         }
         if (!SessionHelper::isAdmin()) {
             http_response_code(403);
-            header("Location: /main");
-            exit("Access denied. Admin privileges required.");
+            ReturnHelper::fail("Access denied. Admin privileges required.");
+            exit;
         }
-        echo "AdminMiddleware executed!<br>";
         return $next($params);
     }
 }
@@ -26,10 +25,9 @@ class LoginAttribute {
 
     public function handle($next, $params) {
         if (!SessionHelper::isLoggedIn()) {
-            header("Location: /login");
+            ReturnHelper::fail("Please Log in");
             exit;
         }
-        echo "LoginMiddleware executed!<br>";
         return $next($params);
     }
 }

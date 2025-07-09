@@ -1,6 +1,5 @@
 <?php
 require_once BASE . "/router.php";
-require_once BASE . "/middleware/common.middleware.php";
 require_once BASE . "/controller/organization.controller.php";
 
 class Router extends BaseRouter {
@@ -13,6 +12,7 @@ switch ($_SERVER["REQUEST_METHOD"]) {
 	case 'POST':
 		break;
 	case 'PUT':
+		$route->put('/organization/create', "Organization@create");
 		break;
     case 'DELETE':
 		$route->delete('/organization/#organization_id/delete', "Organization@deleteOrganization");

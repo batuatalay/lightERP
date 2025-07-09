@@ -11,28 +11,19 @@ class OrganizationAdminAttribute {
         }
     }
     
-    public function handle($next, $params) {
-        if (!SessionHelper::isLoggedIn()) {
-            header("Location: /login");
+    public function handle($next, $params) {        
+        // Sonra admin kontrolü
+        if (!SessionHelper::isAdmin()) {
+            ReturnHelper::fail("Access denied. Admin privileges required.");
             exit;
         }
         
-        // Sonra admin kontrolü
-        if (!SessionHelper::isAdmin()) {
-            http_response_code(403);
-            header("Location: /main");
-            exit("Access denied. Admin privileges required.");
-        }
-        
-        $userId = 1;
-        $organizationId = 1;
+        $userId = SessionHelper::getUserData('id');
+        $organizationId = $params;
         if (!$this->isOrganizationAdmin($organizationId, $userId)) {
-            http_response_code(403);
-            header("Location: /main");
-            exit("The user who logged in, is not organization Admin.");
+            ReturnHelper::fail("The user who logged in, is not organization Admin.");
+            exit;
         }
-        
-        echo "OrganizationAdmin executed!<br>";
         return $next($params);
     }
     
