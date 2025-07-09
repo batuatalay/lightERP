@@ -41,4 +41,13 @@ class PermissionModel extends BaseORM {
             echo 'User permissions cannot created';exit;
         }
     }
+
+    public static function getUserPermissions ($organizationID, $userID) {
+        $permissions = self::select()
+        ->from('organization_user_permissions')
+        ->where('organization_id', '=', $organizationID)
+        ->where('user_id', '=', $userID)
+        ->get();
+        return $permissions;
+    }
 }

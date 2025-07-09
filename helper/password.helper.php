@@ -18,9 +18,8 @@ class PasswordHelper {
      * @param bool $useCustomSalt .env'den salt kullan
      * @return string
      */
-    public static function hash($password, $useCustomSalt = false) {
+    public static function hash($password, $useCustomSalt = true) {
         self::init();
-        
         if ($useCustomSalt) {
             return hash('sha256', $password . self::$hashKey);
         } else {

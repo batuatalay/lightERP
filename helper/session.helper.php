@@ -8,11 +8,9 @@ class SessionHelper {
                 'name' => $userData['name'] ?? '',
                 'username' => $userData['username'] ?? '',
                 'user_role' => $userData['user_role'] ?? 'user',
-                'organization_id' => $userData['organization_id'] ?? null, // NEW: Tenant support
-                'permissions' => $userData['permissions'] ?? [],
-                'created_at' => date('Y-m-d H:i:s')
+                'organization_id' => $userData['organization_id'] ?? null,
+                'permissions' => $userData['permissions'] ?? []
             ];
-            echo "User logged in successfully! Organization: " . ($userData['organization_id'] ?? 'None') . "<br>";
         } else {
             echo 'You are already logged in<br>';
         }

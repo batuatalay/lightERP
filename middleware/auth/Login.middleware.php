@@ -7,10 +7,9 @@ class LoginAttribute {
 
     public function handle($next, $params) {
         if (!SessionHelper::isLoggedIn()) {
-            header("Location: /login");
+            echo 'please log in';
             exit;
         }
-        echo "LoginMiddleware executed!<br>";
         return $next($params);
     }
 } 

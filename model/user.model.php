@@ -27,4 +27,20 @@ class UserModel extends BaseORM {
             echo 'User cannot created';
         }
     }
+
+    public static function getUser($username) {
+        if($username) {
+            $user = self::select()->from(static::$table)->where('username', '=', $username)->first();
+            return $user;
+        } else {
+            echo 'there is no user';
+        }
+    }
+
+    public static function getUserOrganization($userID) {
+        if($userID) {
+            $userOrganization = self::select()->from('organization_user')->where('user_id','=',$userID)->first();
+            return $userOrganization;
+        }
+    }
 }

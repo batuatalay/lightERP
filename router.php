@@ -27,11 +27,13 @@
 		}
 
 		public function post($url, $callback, $parameters = null) {
-			$parameters = $this->getParamaters($url);
-			if(!empty($parameters)) {
-				$url = str_replace($parameters[0], $parameters[1], $url);
-				$parameters = $parameters[1];
-			}
+		    if(empty($parameters)) {
+		        $json = file_get_contents('php://input');
+		        $parameters = json_decode($json, true);
+		        if($parameters === null) {
+		            $parameters = [];
+		        }
+		    }
 			if ($_SERVER["REQUEST_METHOD"] == "POST") {
 				$parameters = empty($parameters) ? $_POST : $parameters;
 				$this->runFunction($url, $callback, $parameters);
