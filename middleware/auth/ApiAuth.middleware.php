@@ -1,5 +1,6 @@
 <?php
 require_once BASE . "/helper/session.helper.php";
+require_once BASE . "/exception/exception.handler.php";
 
 #[Attribute]
 class ApiAuthAttribute {
@@ -103,7 +104,7 @@ class ApiAuthAttribute {
 
         } catch (Exception $e) {
             error_log("JWT Authentication error: " . $e->getMessage());
-            return null;
+            throw new AuthenticationException('Invalid JWT token format', 'JWT_INVALID');
         }
     }
 
@@ -160,26 +161,14 @@ class ApiAuthAttribute {
             return; // Continue without authentication
         }
 
-        http_response_code(401);
-        echo json_encode([
-            'error' => 'Authentication required',
-            'code' => 'AUTH_REQUIRED',
-            'message' => 'Please provide valid authentication credentials'
-        ]);
-        exit;
+        throw new AuthenticationException('Please provide valid authentication credentials', 'AUTH_REQUIRED');
     }
 
     /**
      * Handle invalid authentication
      */
     private function handleInvalidAuth() {
-        http_response_code(401);
-        echo json_encode([
-            'error' => 'Invalid authentication',
-            'code' => 'AUTH_INVALID',
-            'message' => 'The provided authentication credentials are invalid'
-        ]);
-        exit;
+        throw new AuthenticationException('The provided authentication credentials are invalid', 'AUTH_INVALID');
     }
 
     /**

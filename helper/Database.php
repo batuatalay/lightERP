@@ -1,5 +1,7 @@
 <?php
 
+require_once BASE . '/exception/exception.handler.php';
+
 class Database {
     private static $instance = null;
     private $connection;
@@ -38,7 +40,7 @@ class Database {
                 ]
             );
         } catch (PDOException $e) {
-            die("Connection failed: " . $e->getMessage());
+            ExceptionHandler::convertPDOException($e);
         }
     }
 
@@ -52,7 +54,7 @@ class Database {
             $stmt->execute($params);
             return $stmt;
         } catch (PDOException $e) {
-            die("Query failed: " . $e->getMessage());
+            ExceptionHandler::convertPDOException($e);
         }
     }
 } 

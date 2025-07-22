@@ -1,4 +1,7 @@
 <?php
+require_once BASE . '/orm/BaseORM.php';
+require_once BASE . '/exception/exception.handler.php';
+
 class ProductModel extends BaseORM {
     protected static $table = 'products';
     protected static $primaryKey = 'product_id';
@@ -11,21 +14,32 @@ class ProductModel extends BaseORM {
         }
     }
     public static function getProducts($organization_id, $category_id) {
-        if (!$organization_id && !$category_id) {
-            return null;
+        // Validate required parameters
+        if (empty($organization_id)) {
+            throw new ValidationException('Organization ID is required', 'ORGANIZATION_ID_REQUIRED');
+        }
+        if (empty($category_id)) {
+            throw new ValidationException('Category ID is required', 'CATEGORY_ID_REQUIRED');
         }
         
         try {
-            // OrganizationModel'deki pattern'i kullan
             $products = self::select()
                 ->from(static::$table)
                 ->where('organization_id', '=', $organization_id)
                 ->where('category_id', '=', $category_id)
                 ->get();
-            return $products; // var_dump ve exit kaldır
+                
+            if (empty($products)) {
+                throw new NotFoundException('No products found for this organization and category', 'PRODUCTS_NOT_FOUND');
+            }
+            
+            return $products;
+        } catch (PDOException $e) {
+            ExceptionHandler::convertPDOException($e);
+        } catch (NotFoundException $e) {
+            throw $e; // Re-throw NotFoundException as-is
         } catch (Exception $e) {
-            error_log("Error fetching products: " . $e->getMessage());
-            return null;
+            throw new DatabaseException('Failed to fetch products: ' . $e->getMessage(), 'PRODUCT_FETCH_ERROR');
         }
     }
 }

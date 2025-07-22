@@ -1,4 +1,7 @@
 <?php
+require_once BASE . '/orm/BaseORM.php';
+require_once BASE . '/exception/exception.handler.php';
+
 class CategoryModel extends BaseORM {
     protected static $table = 'categories';
     protected static $primaryKey = 'category_id';
@@ -11,19 +14,29 @@ class CategoryModel extends BaseORM {
         }
     }
     public static function getCategories($organization_id) {
-        if(!$organization_id) {
-            return null;
+        // Validate required parameters
+        if (empty($organization_id)) {
+            throw new ValidationException('Organization ID is required', 'ORGANIZATION_ID_REQUIRED');
         }
+        
         try {
             $categories = self::select()
-            ->from(static::$table)
-            ->where('organization_id','=',$organization_id)
-            ->where('status','=','active')
-            ->get();
+                ->from(static::$table)
+                ->where('organization_id', '=', $organization_id)
+                ->where('status', '=', 'active')
+                ->get();
+                
+            if (empty($categories)) {
+                throw new NotFoundException('No active categories found for this organization', 'CATEGORIES_NOT_FOUND');
+            }
+            
             return $categories;
+        } catch (PDOException $e) {
+            ExceptionHandler::convertPDOException($e);
+        } catch (NotFoundException $e) {
+            throw $e; // Re-throw NotFoundException as-is
         } catch (Exception $e) {
-            error_log("Error fetching categories: " . $e->getMessage());
-            return null;
+            throw new DatabaseException('Failed to fetch categories: ' . $e->getMessage(), 'CATEGORY_FETCH_ERROR');
         }
     }
 }
