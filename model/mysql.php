@@ -40,15 +40,15 @@ class Mysql {
 		return $text;
 	}
 
-	protected function beginTransaction() {
+	public function beginTransaction() {
 		return $this->pdo->beginTransaction();
 	}
 
-	protected function commit() {
+	public function commit() {
 		return $this->pdo->commit();
 	}
 
-	protected function rollback() {
+	public function rollback() {
 		return $this->pdo->rollBack();
 	}
 }

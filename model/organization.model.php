@@ -30,6 +30,18 @@ class OrganizationModel extends BaseORM {
             ExceptionHandler::convertPDOException($e);
         }
     }
+
+    public static function getOrganizationByUUID($uuid) {
+        if(!$uuid) {
+            throw new ValidationException("UUID is required", 'MISSING_UUID');
+        }
+        $organization = self::from("organizations")->where("organization_id",'=',$uuid)->first();
+        if(!$organization) {
+            throw new NotFoundException("Organization not found", 'ORGANIZATION_NOT_FOUND');
+        }
+        return $organization;
+
+    }
     public function isOrganizationAdmin($organization_id, $user_id) {
         if (!$organization_id || !$user_id) {
             throw new ValidationException("Organization ID and User ID are required", 'MISSING_REQUIRED_PARAMETERS');

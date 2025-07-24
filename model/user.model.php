@@ -52,6 +52,20 @@ class UserModel extends BaseORM {
         }
     }
 
+    public static function findUser($username) {
+        if (!$username) {
+            return null;
+        }
+        try {
+            $user = self::select()->from(static::$table)->where('username', '=', $username)->first();
+            return $user; // null or user object
+        } catch (PDOException $e) {
+            ExceptionHandler::convertPDOException($e);
+        } catch (Exception $e) {
+            throw new DatabaseException('Failed to retrieve user: ' . $e->getMessage(), 'USER_FETCH_FAILED');
+        }
+    }
+
     public static function getUserOrganization($userID) {
         if (!$userID) {
             throw new ValidationException('User ID is required', 'USER_ID_REQUIRED');
