@@ -1,9 +1,7 @@
 <?php 
-require_once BASE . "/model/organization.model.php";
-require_once BASE . "/helper/date.helper.php";
 require_once BASE . "/helper/return.helper.php";
 require_once BASE . "/exception/exception.handler.php";
-require_once BASE . "/helper/session.helper.php";
+require_once BASE . "/service/organization.service.php";
 
 require_once BASE . "/middleware/organization/organization.middleware.php";
 
@@ -13,40 +11,34 @@ class Organization extends SimpleController {
     #[OrganizationAdminAttribute]
     public static function deleteOrganization($params) {
         try {
-            if (OrganizationModel::deleteByUUID($params)) {
-                ReturnHelper::success('Organization successfully deleted');
-            } else {
-                ReturnHelper::fail("Organization Delete failed");
-            }
+            $organizationService = new OrganizationService();
+            $organizationService->deleteOrganization($params);
+            ReturnHelper::success('Organization successfully deleted');
         } catch (ValidationException $e) {
-            ReturnHelper::error($e->getMessage(), $e->getErrorCode(), 400);
+            ExceptionHandler::handleException($e);
         } catch (NotFoundException $e) {
-            ReturnHelper::error($e->getMessage(), $e->getErrorCode(), 404);
+            ExceptionHandler::handleException($e);
         } catch (DatabaseException $e) {
-            ReturnHelper::error($e->getMessage(), $e->getErrorCode(), 500);
+            ExceptionHandler::handleException($e);
         } catch (Exception $e) {
-            ReturnHelper::error('Internal server error', 'INTERNAL_ERROR', 500);
-            error_log("Organization deletion error: " . $e->getMessage());
+            ExceptionHandler::handleException($e);
         }
     }
 
     #[LoginAttribute]
     public static function create($params) {
         try {
-            DateHelper::now();
-            $organizationID = OrganizationModel::create($params);
-            OrganizationModel::createOrganizationUser(SessionHelper::getUserData('id'), $organizationID, 'admin');
-            OrganizationModel::createProperties($organizationID, $params['properties']);
+            $organizationService = new OrganizationService();
+            $organizationID = $organizationService->createOrganization($params);
             ReturnHelper::success('Organization successfully created', ['organization_id' => $organizationID]);
         } catch (ValidationException $e) {
-            ReturnHelper::error($e->getMessage(), $e->getErrorCode(), 400);
+            ExceptionHandler::handleException($e);
         } catch (ConflictException $e) {
-            ReturnHelper::error($e->getMessage(), $e->getErrorCode(), 409);
+            ExceptionHandler::handleException($e);
         } catch (DatabaseException $e) {
-            ReturnHelper::error($e->getMessage(), $e->getErrorCode(), 500);
+            ExceptionHandler::handleException($e);
         } catch (Exception $e) {
-            ReturnHelper::error('Internal server error', 'INTERNAL_ERROR', 500);
-            error_log("Organization creation error: " . $e->getMessage());
+            ExceptionHandler::handleException($e);
         }
     }
 }
