@@ -75,7 +75,6 @@ class SessionHelper {
         unset($_SESSION['user']);
         unset($_SESSION['current_organization_context']);
         session_destroy();
-        echo "Session destroyed<br>";
     }
 
     public static function changeUser() {

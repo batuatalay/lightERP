@@ -30,9 +30,6 @@ class LoginService extends BaseService {
         if (empty($this->user)) {
             throw new AuthenticationException('Invalid username', 'INVALID_CREDENTIALS');
         } else {
-            if (!isset($this->user['password']) || empty($this->user['password'])) {
-                throw new AuthenticationException('User password not found', 'INVALID_CREDENTIALS');
-            }
             if (!PasswordHelper::autoVerify($this->password, $this->user['password'])) {
                 throw new AuthenticationException('Invalid password', 'INVALID_CREDENTIALS');
             }
@@ -53,5 +50,13 @@ class LoginService extends BaseService {
             'user_role' => $userOrganization['role'],
             'permissions' => $userPermissions
         ];
+    }
+
+    public function isLoggedIn(){
+        if(isset($_SESSION['user'])) {
+            throw new AuthenticationException('You are already logged in');
+        } else {
+            return false;
+        }
     }
 }
