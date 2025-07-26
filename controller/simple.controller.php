@@ -1,5 +1,6 @@
 <?php
 require_once BASE . "/middleware/common.middleware.php";
+require_once BASE . "/helper/return.helper.php";
 /**
  * Base Controller Class
  */
@@ -44,7 +45,7 @@ class SimpleController
     }
     
     public static function returnData($response) {
-        echo json_encode(['status' => $response['code'], 'message' => $response['message']]);
+        ReturnHelper::json(['status' => $response['code'], 'message' => $response['message']]);
     }
 
     public static function redirect($url) {
@@ -54,7 +55,7 @@ class SimpleController
 
     public static function json($data) {
         header('Content-Type: application/json');
-        echo json_encode($data);
+        ReturnHelper::json($data);
         exit;
     }
 }

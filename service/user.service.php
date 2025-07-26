@@ -8,6 +8,7 @@ require_once BASE . "helper/date.helper.php";
 require_once BASE . "model/organization.model.php";
 require_once BASE . "model/permission.model.php";
 
+
 class UserService extends BaseService
 {
     const requiredFields = [
@@ -37,24 +38,17 @@ class UserService extends BaseService
         }
     }
     public static function createUser(array $userData) {
-        // 1. Validation
         self::validateRequired(self::requiredFields, $userData);
         self::checkBusinessRule($userData);
-
-        // 3. Execute in transaction
         return self::executeInTransaction(function() use ($userData) {
             DateHelper::now();
-
             $userID = UserModel::create($userData);
             if($userID) {
-                // Organization'a ekle
                 OrganizationModel::createOrganizationUser(
                     $userID,
                     $userData['organization_id'],
                     $userData['role']
                 );
-
-                // Permission'ları ata (eğer varsa)
                 if (!empty($userData['permissions'])) {
                     PermissionModel::createOrganizationUserPermission(
                         $userID,
@@ -62,7 +56,7 @@ class UserService extends BaseService
                         $userData['permissions']
                     );
                 }
-                return $userID; // Sadece userID döndür, JSON response controller'da olacak
+                return $userID;
 
             } else {
                 throw new DatabaseException("User cannot be created");

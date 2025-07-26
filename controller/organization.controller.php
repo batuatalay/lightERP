@@ -19,17 +19,13 @@ class Organization extends SimpleController {
                 ReturnHelper::fail("Organization Delete failed");
             }
         } catch (ValidationException $e) {
-            http_response_code(400);
-            ReturnHelper::fail($e->getMessage(), $e->getErrorCode());
+            ReturnHelper::error($e->getMessage(), $e->getErrorCode(), 400);
         } catch (NotFoundException $e) {
-            http_response_code(404);
-            ReturnHelper::fail($e->getMessage(), $e->getErrorCode());
+            ReturnHelper::error($e->getMessage(), $e->getErrorCode(), 404);
         } catch (DatabaseException $e) {
-            http_response_code(500);
-            ReturnHelper::fail($e->getMessage(), $e->getErrorCode());
+            ReturnHelper::error($e->getMessage(), $e->getErrorCode(), 500);
         } catch (Exception $e) {
-            http_response_code(500);
-            ReturnHelper::fail('Internal server error', 'INTERNAL_ERROR');
+            ReturnHelper::error('Internal server error', 'INTERNAL_ERROR', 500);
             error_log("Organization deletion error: " . $e->getMessage());
         }
     }
@@ -43,17 +39,13 @@ class Organization extends SimpleController {
             OrganizationModel::createProperties($organizationID, $params['properties']);
             ReturnHelper::success('Organization successfully created', ['organization_id' => $organizationID]);
         } catch (ValidationException $e) {
-            http_response_code(400);
-            ReturnHelper::fail($e->getMessage(), $e->getErrorCode());
+            ReturnHelper::error($e->getMessage(), $e->getErrorCode(), 400);
         } catch (ConflictException $e) {
-            http_response_code(409);
-            ReturnHelper::fail($e->getMessage(), $e->getErrorCode());
+            ReturnHelper::error($e->getMessage(), $e->getErrorCode(), 409);
         } catch (DatabaseException $e) {
-            http_response_code(500);
-            ReturnHelper::fail($e->getMessage(), $e->getErrorCode());
+            ReturnHelper::error($e->getMessage(), $e->getErrorCode(), 500);
         } catch (Exception $e) {
-            http_response_code(500);
-            ReturnHelper::fail('Internal server error', 'INTERNAL_ERROR');
+            ReturnHelper::error('Internal server error', 'INTERNAL_ERROR', 500);
             error_log("Organization creation error: " . $e->getMessage());
         }
     }

@@ -13,13 +13,11 @@ class Company extends SimpleController{
 	public static function getAll() {
 		try {
 			$companies = CompanyModel::getAllCompaniesWithContacts();
-			echo json_encode(['success' => true, 'data' => $companies]);
+			ReturnHelper::successWithData($companies);
 		} catch (DatabaseException $e) {
-			http_response_code(500);
-			echo json_encode(['success' => false, 'error' => $e->getMessage(), 'error_code' => $e->getErrorCode()]);
+			ReturnHelper::error($e->getMessage(), $e->getErrorCode(), 500);
 		} catch (Exception $e) {
-			http_response_code(500);
-			echo json_encode(['success' => false, 'error' => 'Internal server error', 'error_code' => 'INTERNAL_ERROR']);
+			ReturnHelper::error('Internal server error', 'INTERNAL_ERROR', 500);
 			error_log("Company getAll error: " . $e->getMessage());
 		}
 	}
@@ -29,19 +27,15 @@ class Company extends SimpleController{
 		try {
 			DateHelper::now();
 			$companyId = CompanyModel::create($params);
-			echo json_encode(['success' => true, 'company_id' => $companyId, 'message' => 'Company created successfully']);
+			ReturnHelper::json(['success' => true, 'company_id' => $companyId, 'message' => 'Company created successfully']);
 		} catch (ValidationException $e) {
-			http_response_code(400);
-			echo json_encode(['success' => false, 'error' => $e->getMessage(), 'error_code' => $e->getErrorCode()]);
+			ReturnHelper::error($e->getMessage(), $e->getErrorCode(), 400);
 		} catch (ConflictException $e) {
-			http_response_code(409);
-			echo json_encode(['success' => false, 'error' => $e->getMessage(), 'error_code' => $e->getErrorCode()]);
+			ReturnHelper::error($e->getMessage(), $e->getErrorCode(), 409);
 		} catch (DatabaseException $e) {
-			http_response_code(500);
-			echo json_encode(['success' => false, 'error' => $e->getMessage(), 'error_code' => $e->getErrorCode()]);
+			ReturnHelper::error($e->getMessage(), $e->getErrorCode(), 500);
 		} catch (Exception $e) {
-			http_response_code(500);
-			echo json_encode(['success' => false, 'error' => 'Internal server error', 'error_code' => 'INTERNAL_ERROR']);
+			ReturnHelper::error('Internal server error', 'INTERNAL_ERROR', 500);
 			error_log("Company creation error: " . $e->getMessage());
 		}
 	}
@@ -51,19 +45,15 @@ class Company extends SimpleController{
 		try {
 			DateHelper::now();
 			CompanyModel::softDelete($params);
-			echo json_encode(['success' => true, 'message' => 'Company deleted successfully']);
+			ReturnHelper::json(['success' => true, 'message' => 'Company deleted successfully']);
 		} catch (ValidationException $e) {
-			http_response_code(400);
-			echo json_encode(['success' => false, 'error' => $e->getMessage(), 'error_code' => $e->getErrorCode()]);
+			ReturnHelper::error($e->getMessage(), $e->getErrorCode(), 400);
 		} catch (NotFoundException $e) {
-			http_response_code(404);
-			echo json_encode(['success' => false, 'error' => $e->getMessage(), 'error_code' => $e->getErrorCode()]);
+			ReturnHelper::error($e->getMessage(), $e->getErrorCode(), 404);
 		} catch (DatabaseException $e) {
-			http_response_code(500);
-			echo json_encode(['success' => false, 'error' => $e->getMessage(), 'error_code' => $e->getErrorCode()]);
+			ReturnHelper::error($e->getMessage(), $e->getErrorCode(), 500);
 		} catch (Exception $e) {
-			http_response_code(500);
-			echo json_encode(['success' => false, 'error' => 'Internal server error', 'error_code' => 'INTERNAL_ERROR']);
+			ReturnHelper::error('Internal server error', 'INTERNAL_ERROR', 500);
 			error_log("Company deletion error: " . $e->getMessage());
 		}
 	}

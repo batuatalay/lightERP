@@ -49,6 +49,11 @@ class PasswordHelper {
      * @return bool
      */
     public static function autoVerify($password, $hash) {
+        // Null veya boş hash kontrolü
+        if (empty($hash)) {
+            return false;
+        }
+        
         // bcrypt hash mi kontrol et
         if (strpos($hash, '$2y$') === 0 || strpos($hash, '$2a$') === 0 || strpos($hash, '$2x$') === 0) {
             return self::verify($password, $hash, false);

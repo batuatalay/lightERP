@@ -24,33 +24,13 @@ class User extends SimpleController{
                 ReturnHelper::success('User created successfully');
             }
         } catch (ValidationException $e) {
-            http_response_code(400);
-            echo json_encode([
-                'success' => false,
-                'error' => $e->getMessage(),
-                'error_code' => $e->getErrorCode()
-            ]);
+            ReturnHelper::error($e->getMessage(), $e->getErrorCode(), 400);
         } catch (ConflictException $e) {
-            http_response_code(409);
-            echo json_encode([
-                'success' => false,
-                'error' => $e->getMessage(),
-                'error_code' => $e->getErrorCode()
-            ]);
+            ReturnHelper::error($e->getMessage(), $e->getErrorCode(), 409);
         } catch (DatabaseException $e) {
-            http_response_code(500);
-            echo json_encode([
-                'success' => false,
-                'error' => $e->getMessage(),
-                'error_code' => $e->getErrorCode()
-            ]);
+            ReturnHelper::error($e->getMessage(), $e->getErrorCode(), 500);
         } catch (Exception $e) {
-            http_response_code(500);
-            echo json_encode([
-                'success' => false,
-                'error' => 'Internal server error',
-                'error_code' => 'INTERNAL_ERROR'
-            ]);
+            ReturnHelper::error('Internal server error', 'INTERNAL_ERROR', 500);
             error_log("User creation error: " . $e->getMessage());
         }
     }

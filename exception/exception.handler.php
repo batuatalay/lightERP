@@ -7,6 +7,7 @@ require_once 'authentication.exception.php';
 require_once 'authorization.exception.php';
 require_once 'notfound.exception.php';
 require_once 'conflict.exception.php';
+require_once BASE . "/helper/return.helper.php";
 
 class ExceptionHandler {
     
@@ -34,13 +35,11 @@ class ExceptionHandler {
         ));
         
         header('Content-Type: application/json');
-        echo json_encode($response);
+        ReturnHelper::json($response, $exception->getHttpStatusCode());
         exit;
     }
     
     private static function handleGenericException(Exception $exception) {
-        http_response_code(500);
-        
         $response = [
             'error' => true,
             'error_code' => 'INTERNAL_ERROR',
@@ -57,7 +56,7 @@ class ExceptionHandler {
         ));
         
         header('Content-Type: application/json');
-        echo json_encode($response);
+        ReturnHelper::json($response, 500);
         exit;
     }
     
