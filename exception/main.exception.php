@@ -7,7 +7,6 @@ require_once 'authentication.exception.php';
 require_once 'authorization.exception.php';
 require_once 'notfound.exception.php';
 require_once 'conflict.exception.php';
-require_once BASE . "/helper/return.helper.php";
 
 class ExceptionHandler {
     

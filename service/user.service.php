@@ -1,14 +1,4 @@
 <?php
-require_once BASE . "service/base.service.php";
-require_once BASE . "model/user.model.php";
-require_once BASE . "helper/password.helper.php";
-require_once BASE . "helper/uuid.helper.php";
-require_once BASE . "helper/date.helper.php";
-
-require_once BASE . "model/organization.model.php";
-require_once BASE . "model/permission.model.php";
-
-
 class UserService extends BaseService
 {
     const requiredFields = [

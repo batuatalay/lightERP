@@ -1,7 +1,4 @@
 <?php
-require_once BASE . '/orm/BaseORM.php';
-require_once BASE . '/exception/exception.handler.php';
-
 class CategoryModel extends BaseORM {
     protected static $table = 'categories';
     protected static $primaryKey = 'category_id';

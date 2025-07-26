@@ -1,16 +1,4 @@
-<?php 
-require_once BASE . "helper/session.helper.php";
-require_once BASE . "helper/date.helper.php";
-require_once BASE . "helper/return.helper.php";
-require_once BASE . "exception/exception.handler.php";
-
-require_once BASE . "model/user.model.php";
-require_once BASE . "model/organization.model.php";
-require_once BASE . "model/permission.model.php";
-
-require_once BASE . 'service/user.service.php';
-
-
+<?php
 #[Prefix('login')]
 class User extends SimpleController{
 

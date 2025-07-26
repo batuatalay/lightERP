@@ -1,9 +1,4 @@
 <?php
-require_once BASE . "/middleware/common.middleware.php";
-require_once BASE . "/helper/return.helper.php";
-/**
- * Base Controller Class
- */
 class SimpleController
 {
     public static function view($file, $view, $args = null) {

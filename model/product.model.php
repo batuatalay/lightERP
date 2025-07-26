@@ -1,7 +1,4 @@
 <?php
-require_once BASE . '/orm/BaseORM.php';
-require_once BASE . '/exception/exception.handler.php';
-
 class ProductModel extends BaseORM {
     protected static $table = 'products';
     protected static $primaryKey = 'product_id';

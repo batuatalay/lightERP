@@ -1,10 +1,4 @@
 <?php
-require_once BASE . "/helper/password.helper.php";
-require_once BASE . "/helper/uuid.helper.php";
-require_once BASE . "/helper/date.helper.php";
-require_once BASE . '/orm/BaseORM.php';
-require_once BASE . '/exception/exception.handler.php';
-
 class UserModel extends BaseORM {
     protected static $table = 'users';
     protected static $primaryKey = 'user_id';

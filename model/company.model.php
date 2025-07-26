@@ -24,6 +24,7 @@ class CompanyModel extends BaseORM {
                     'updated_at' => DateHelper::get()
                 ];
                 self::from(static::$table)->insert($company)->execute();
+                return $companyID;
             } catch(Exception $e) {
                 ReturnHelper::fail($e->getMessage());
             }
@@ -36,7 +37,7 @@ class CompanyModel extends BaseORM {
             $company->status = 'inactive';
             $company->updated_at = DateHelper::get();
             $company->save();
-            ReturnHelper::success("Company successfully deleted");
+            return true;
         } catch (Exception $e) {
             ReturnHelper::fail($e->getMessage());
         }

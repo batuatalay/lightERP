@@ -1,10 +1,4 @@
 <?php
-require_once BASE . "/helper/uuid.helper.php";
-require_once BASE . "/helper/slug.helper.php";
-require_once BASE . "/helper/date.helper.php";
-require_once BASE . '/orm/BaseORM.php';
-require_once BASE . "/exception/exception.handler.php";
-
 class OrganizationModel extends BaseORM {
     protected static $table = 'organizations';
     protected static $primaryKey = 'organization_id';

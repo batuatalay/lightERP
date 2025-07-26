@@ -1,11 +1,9 @@
-<?php 
-require_once BASE . "/helper/return.helper.php";
-require_once BASE . "/exception/exception.handler.php";
-require_once BASE . "/service/organization.service.php";
-
+<?php
 require_once BASE . "/middleware/organization/organization.middleware.php";
-
 class Organization extends SimpleController {
+    public static function test() {
+        echo '1234';
+    }
     
     #[LoginAttribute]
     #[OrganizationAdminAttribute]

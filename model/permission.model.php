@@ -1,9 +1,4 @@
 <?php
-require_once BASE . '/orm/BaseORM.php';
-require_once BASE . '/exception/exception.handler.php';
-require_once BASE . '/helper/uuid.helper.php';
-require_once BASE . '/helper/date.helper.php';
-
 class PermissionModel extends BaseORM {
     protected static $table = 'permissions';
     protected static $primaryKey = 'permission_id';

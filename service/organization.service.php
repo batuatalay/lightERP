@@ -1,14 +1,4 @@
 <?php
-
-require_once BASE . "/service/base.service.php";
-require_once BASE . "/model/organization.model.php";
-require_once BASE . "/helper/date.helper.php";
-require_once BASE . "/helper/session.helper.php";
-require_once BASE . "/exception/validation.exception.php";
-require_once BASE . "/exception/conflict.exception.php";
-require_once BASE . "/exception/database.exception.php";
-require_once BASE . "/exception/notfound.exception.php";
-
 class OrganizationService extends BaseService {
 
     public function createOrganization($params) {

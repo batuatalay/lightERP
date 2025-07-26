@@ -1,6 +1,6 @@
 <?php
 require_once BASE . "/helper/session.helper.php";
-require_once BASE . "/exception/exception.handler.php";
+require_once BASE . "/exception/main.exception.php";
 
 #[Attribute]
 class LoginAttribute {

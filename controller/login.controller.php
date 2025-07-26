@@ -1,14 +1,8 @@
-<?php 
-require_once BASE . "/helper/session.helper.php";
-require_once BASE . "/helper/return.helper.php";
-require_once BASE . "/exception/exception.handler.php";
-
-require_once BASE . "/service/login.service.php";
-
+<?php
 #[Prefix('login')]
 class Login extends SimpleController{
 
-    public static function loginPage() {
+    public function loginPage() {
     }
 
     public static function signIn($params) {
