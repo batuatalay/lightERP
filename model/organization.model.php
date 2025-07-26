@@ -73,12 +73,13 @@ class OrganizationModel extends BaseORM {
         
         try {
             // Check if organization exists before deletion
-            $existing = self::select()->from('organizations')->where('organization_id','=',$organizationID)->first();
+            $existing = static::find($organizationID);
             if (!$existing) {
                 throw new NotFoundException("Organization not found", 'ORGANIZATION_NOT_FOUND');
             }
-            
-            self::from('organizations')->where('organization_id','=',$organizationID)->delete();
+            $existing->status = 'inactive';
+            $existing->updated_at = DateHelper::get();
+            $existing->save();
             return true;
         } catch (PDOException $e) {
             ExceptionHandler::convertPDOException($e);

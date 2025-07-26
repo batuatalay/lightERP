@@ -26,9 +26,7 @@ class OrganizationService extends BaseService {
     }
 
     public function deleteOrganization($params) {
-        // Validate required fields for deletion
-        $this->validateDeleteParams($params);
-        
+        DateHelper::now();
         $result = OrganizationModel::deleteByUUID($params);
         
         if (!$result) {
@@ -65,62 +63,8 @@ class OrganizationService extends BaseService {
             throw new ValidationException("Invalid email format", "INVALID_EMAIL_FORMAT");
         }
     }
-
-    private function validateDeleteParams($params) {
-        $requiredFields = ['uuid'];
-        self::validateRequired($requiredFields, $params);
-        
-        if (isset($params['uuid']) && !$this->isValidUUID($params['uuid'])) {
-            throw new ValidationException("Invalid UUID format", "INVALID_UUID_FORMAT");
-        }
-    }
-
     private function isValidUUID($uuid) {
         return preg_match('/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i', $uuid);
-    }
-
-    public function getOrganizationById($organizationId) {
-        if (!$this->isValidUUID($organizationId)) {
-            throw new ValidationException("Invalid organization ID format", "INVALID_UUID_FORMAT");
-        }
-        
-        return OrganizationModel::getById($organizationId);
-    }
-
-    public function updateOrganization($organizationId, $params) {
-        return self::executeInTransaction(function() use ($organizationId, $params) {
-            // Validate organization ID
-            if (!$this->isValidUUID($organizationId)) {
-                throw new ValidationException("Invalid organization ID format", "INVALID_UUID_FORMAT");
-            }
-            
-            // Validate update data
-            $this->validateUpdateData($params);
-            
-            // Update organization
-            return OrganizationModel::update($organizationId, $params);
-        });
-    }
-
-    private function validateUpdateData($params) {
-        if (isset($params['organization_name']) && strlen(trim($params['organization_name'])) < 2) {
-            throw new ValidationException("Organization name must be at least 2 characters long", "INVALID_NAME_LENGTH");
-        }
-        
-        if (isset($params['status'])) {
-            $validStatuses = ['active', 'inactive', 'pending', 'suspended'];
-            if (!in_array($params['status'], $validStatuses)) {
-                throw new ValidationException("Invalid status. Must be one of: " . implode(', ', $validStatuses), "INVALID_STATUS");
-            }
-        }
-        
-        if (isset($params['properties'])) {
-            $this->validatePropertiesArray($params['properties']);
-        }
-        
-        if (isset($params['email']) && !empty($params['email']) && !filter_var($params['email'], FILTER_VALIDATE_EMAIL)) {
-            throw new ValidationException("Invalid email format", "INVALID_EMAIL_FORMAT");
-        }
     }
 
     private function validatePropertiesArray($properties) {

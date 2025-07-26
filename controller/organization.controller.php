@@ -6,7 +6,7 @@ class Organization extends SimpleController {
     }
     
     #[LoginAttribute]
-    #[OrganizationAdminAttribute]
+    //#[OrganizationAdminAttribute]
     public static function deleteOrganization($params) {
         try {
             $organizationService = new OrganizationService();
