@@ -76,7 +76,7 @@ class PermissionModel extends BaseORM {
         }
         
         try {
-            $permissions = self::select()
+            $permissions = self::select(['permission_id', 'level'])
                 ->from('organization_user_permissions')
                 ->where('organization_id', '=', $organizationID)
                 ->where('user_id', '=', $userID)

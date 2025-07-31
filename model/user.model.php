@@ -5,7 +5,6 @@ class UserModel extends BaseORM {
     protected static $fillable = ['name', 'username', 'email', 'password'];
 
     public static function create($params) {
-        $now = date('Y-m-d h:i:s');
         $userID = UUIDHelper::generate();
         $user = [
             'user_id' => $userID,

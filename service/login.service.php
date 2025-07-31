@@ -24,8 +24,10 @@ class LoginService extends BaseService {
             }
         }
         $this->getUserData();
-        SessionHelper::createUserSession($this->sessionUser);
-
+        DateHelper::now();
+        $token = JWTHelper::generateToken($this->sessionUser);
+        LoginModel::createUserLogin($this->sessionUser['id'], $token);
+        SessionHelper::createUserSession($token);
     }
 
     public function getUserData() {

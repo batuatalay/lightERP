@@ -27,6 +27,13 @@ class LoginAttribute {
         if (!SessionHelper::isLoggedIn()) {
             ReturnHelper::fail("Please Log in");
             exit;
+        } else {
+            $user = SessionHelper::getUserData();
+            $userLogin = LoginModel::getUserLogin($user['id']);
+            if ($userLogin['status'] != 'active') {
+                SessionHelper::destroySession();
+                throw new AuthenticationException('Authentication required. Please log in.', 'LOGIN_REQUIRED');
+            }
         }
         return $next($params);
     }

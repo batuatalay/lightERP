@@ -26,6 +26,7 @@ class Login extends SimpleController{
 
     public function signOut(){
         try {
+            LoginModel::userSignOut(SessionHelper::getUserData());
             SessionHelper::destroySession();
             ReturnHelper::success('You are successfully signout');
         } catch (Exception $e) {
@@ -37,13 +38,4 @@ class Login extends SimpleController{
         return SessionHelper::isLoggedIn();
     }
 
-    public static function changeUser() {
-        try {
-            SessionHelper::changeUser();
-            header("Location: /main");
-            exit;
-        } catch (Exception $e) {
-            ExceptionHandler::handleException($e);
-        }
-    }
 }

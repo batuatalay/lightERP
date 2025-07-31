@@ -32,10 +32,4 @@ class User extends SimpleController{
     public static function loginCheck() {
         return SessionHelper::isLoggedIn();
     }
-
-    public static function changeUser() {
-        SessionHelper::changeUser();
-        header("Location: /main");
-        exit;
-    }
 }
