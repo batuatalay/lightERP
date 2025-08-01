@@ -1,5 +1,4 @@
-DROP TABLE IF EXISTS products;
-CREATE TABLE products (
+CREATE TABLE inventory_products (
     product_id VARCHAR(36) PRIMARY KEY,
     organization_id VARCHAR(36) NOT NULL,
     category_id VARCHAR(36) NULL,

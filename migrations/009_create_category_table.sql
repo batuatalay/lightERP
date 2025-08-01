@@ -1,4 +1,3 @@
-DROP TABLE IF EXISTS categories;
 CREATE TABLE categories (
     category_id VARCHAR(36) PRIMARY KEY,
     organization_id VARCHAR(36) NOT NULL,

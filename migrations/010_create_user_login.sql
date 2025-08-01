@@ -14,4 +14,4 @@ CREATE TABLE user_login (
     ON UPDATE CASCADE
 ) COLLATE=utf8mb4_unicode_ci;
 
-CREATE INDEX idx_user_logins_user_id ON user_logins(user_id);
+CREATE INDEX idx_user_logins_user_id ON user_login(user_id);

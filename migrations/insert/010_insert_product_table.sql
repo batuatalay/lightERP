@@ -1,4 +1,4 @@
-INSERT INTO products (product_id, organization_id, category_id, code, name, stock, cost_price, sale_price, tax_rate, status, created_at, updated_at, updated_by) VALUES
+INSERT INTO inventory_products (product_id, organization_id, category_id, code, name, stock, cost_price, sale_price, tax_rate, status, created_at, updated_at, updated_by) VALUES
 ('250e8400-e29b-41d4-a716-446655440001', '550e8400-e29b-41d4-a716-446655440001', '150e8400-e29b-41d4-a716-446655440002', 'TC-LAP-001', 'Dell Latitude 5520 Laptop', 15, 8500.0000, 12000.0000, 18.00, 'active', NOW(), NOW(), '650e8400-e29b-41d4-a716-446655440001'),
 ('250e8400-e29b-41d4-a716-446655440002', '550e8400-e29b-41d4-a716-446655440001', '150e8400-e29b-41d4-a716-446655440002', 'TC-LAP-002', 'HP EliteBook 840 G8', 8, 9200.0000, 13500.0000, 18.00, 'active', NOW(), NOW(), '650e8400-e29b-41d4-a716-446655440001'),
 ('250e8400-e29b-41d4-a716-446655440003', '550e8400-e29b-41d4-a716-446655440001', '150e8400-e29b-41d4-a716-446655440003', 'TC-PHN-001', 'iPhone 14 Pro', 25, 18000.0000, 25000.0000, 18.00, 'active', NOW(), NOW(), '650e8400-e29b-41d4-a716-446655440002'),

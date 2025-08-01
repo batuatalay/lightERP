@@ -9,6 +9,7 @@ $route = new Router();
 switch ($_SERVER["REQUEST_METHOD"]) {
     case 'GET':
         $route->get('/inventory', "Inventory@getInventory");
+        $route->get('/inventory/#organizationID/warehouses', "Inventory@getWarehouses");
         break;
     case 'POST':
         break;
